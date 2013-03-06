@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="lib" path="C:/Users/User/Documents/Java Files/lib/twitter4j-async-3.0.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/User/Documents/Java Files/lib/twitter4j-core-3.0.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/User/Documents/Java Files/lib/twitter4j-examples-3.0.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/User/Documents/Java Files/lib/twitter4j-media-support-3.0.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/User/Documents/Java Files/lib/twitter4j-stream-3.0.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/User/Dropbox/Twitter/lib/commons-logging-1.1.1-bin/commons-logging-1.1.1/commons-logging-1.1.1.jar" sourcepath="C:/Users/User/Dropbox/Twitter/lib/commons-logging-1.1.1-bin/commons-logging-1.1.1/commons-logging-1.1.1-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/User/Dropbox/Twitter/lib/commons-logging-1.1.1-bin/commons-logging-1.1.1/commons-logging-api-1.1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/User/Dropbox/Twitter/lib/commons-beanutils-1.8.3-bin/commons-beanutils-1.8.3/commons-beanutils-1.8.3.jar" sourcepath="C:/Users/User/Dropbox/Twitter/lib/commons-beanutils-1.8.3-bin/commons-beanutils-1.8.3/commons-beanutils-1.8.3-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/User/Dropbox/Twitter/lib/commons-lang-2.6-bin/commons-lang-2.6/commons-lang-2.6.jar" sourcepath="C:/Users/User/Dropbox/Twitter/lib/commons-lang-2.6-bin/commons-lang-2.6/commons-lang-2.6-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/User/Dropbox/Twitter/lib/ezmorph-1.0.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/User/Dropbox/Twitter/lib/commons-beanutils-1.8.3-bin/commons-beanutils-1.8.3/commons-beanutils-bean-collections-1.8.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/User/Dropbox/Twitter/lib/json-lib-0.9.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
