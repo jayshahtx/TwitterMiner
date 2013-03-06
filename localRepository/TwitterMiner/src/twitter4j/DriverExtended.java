@@ -27,7 +27,7 @@ import twitter4j.conf.ConfigurationBuilder;
 
 public class DriverExtended {
 	
-	//keys to access twitter API
+	//keys to access twitter API - you will need to register your app with Twitter
 	private static String CONSUMER_KEY = "KSLxW76QxmSUZ2QQvIPq7g";
 	private static String CONSUMER_SECRET = "09hnGy5WEtn7rWYASaF5oumOjQNyUgeLaSnuVAfnYkU";
 	private static String ACCESS_TOKEN = "249999118-viQXaUp63aL1kxORNB9069ER16EkPh2sQJDKK1Ws";
