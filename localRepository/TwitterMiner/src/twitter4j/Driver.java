@@ -20,26 +20,15 @@ import java.util.concurrent.TimeoutException;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 
-
-/*
- * Class that connects to Twitter Streaming API and stores them in a text file of 50,000 tweets/file
- */
-
-public class DriverExtended {
+public class Driver {
 	
-	//keys to access twitter API - you will need to register your app with Twitter
-	private static String CONSUMER_KEY = "";
-	private static String CONSUMER_SECRET = "";
-	private static String ACCESS_TOKEN = "";
-	private static String ACCESS_TOKEN_SECRET = "";
+	//keys to access twitter API - register your app with Twitter
+	private static String CONSUMER_KEY = "KSLxW76QxmSUZ2QQvIPq7g";
+	private static String CONSUMER_SECRET = "09hnGy5WEtn7rWYASaF5oumOjQNyUgeLaSnuVAfnYkU";
+	private static String ACCESS_TOKEN = "249999118-viQXaUp63aL1kxORNB9069ER16EkPh2sQJDKK1Ws";
+	private static String ACCESS_TOKEN_SECRET = "lLO2iqezwTe1WSqUBSg1RzcpCAX0lymI4CVbhBAfI";
 	
-	//directory to store all tweets
-	public static final String ALL_TWEETS_DIR = "C:\\Users\\User\\Dropbox\\TwitterProject\\Data\\All\\";
-	
-	//directory to store all geo-coded tweets
-	public static final String GEO_TWEETS_DIR = "C:\\Users\\User\\Dropbox\\TwitterProject\\Data\\Geo\\";
-	
-	//count of tweets recorded before new file
+	//count of tweets recorded before new fie
 	public static int tweetCount = 0;
 	
 	//count of geo tweets
@@ -51,14 +40,11 @@ public class DriverExtended {
 	//total tweets over duration or program
 	public static int allTweets = 0;
 	
-	//total tweets recorded that were geo tagged
-	public static int allGeo = 0;
-	
 	//tweets to mine per cycle
-	public static int TWEETS_PER_FILE = 50000;
+	public static int TWEETS_PER_CYCLE = 500;
 	
 	//number of cycles to mine
-	public static int TWEET_CYCLES = 5000;
+	public static int TWEET_CYCLES = 100;
 	
 	//twitter object
 	public static Twitter twitter;
@@ -96,15 +82,14 @@ public class DriverExtended {
 		minute = cal.get(Calendar.MINUTE);
 	}
 	
-	//method to create writers, required for each new text file created - the name of text file is dynamic based on date and time at moment of creation
 	public static void setUpWriters(String prefix) throws IOException {
 		  
 		  if (prefix.equals("all")) {
-			  File all = new File(ALL_TWEETS_DIR + prefix + "Tweets" + "_" + month + "_" + day + "_" + hour + "_" + minute + ".txt");
+			  File all = new File("E:\\TwitterData\\" + prefix + "Tweets" + "_" + month + "_" + day + "_" + hour + "_" + minute + ".txt");
 			  allOut = new BufferedWriter(new FileWriter(all));
 		  }
 		  if (prefix.equals("geo")) {
-			  File geo = new File(GEO_TWEETS_DIR + prefix + "Tweets" + "_" + month + "_" + day + "_" + hour + "_" + minute + ".txt");
+			  File geo = new File("E:\\TwitterData\\" + prefix + "Tweets" + "_" + month + "_" + day + "_" + hour + "_" + minute + ".txt");
 			  geoOut = new BufferedWriter(new FileWriter(geo));
 		  }
 		  
@@ -133,24 +118,19 @@ public class DriverExtended {
 	            public void onStatus(Status status) {
 	            	setUpTime();
 	            	throttleCount++;
-	            	allTweets++;
-	            	if (allTweets % 100 == 0) {
-//	            		System.out.println("Total count of all tweet: " + allTweets++);
-	            		System.out.println("Geo Tagged Tweets: " + allGeo);
-	            		System.out.println();
-	            	}
+	            	tweetCount++;
+	            	System.out.println("Total count of all tweet: " + allTweets++);
 	            	
 	            	//write to different file if this tweet is geoCoded
 	                if (status.getGeoLocation() != null) {
-	                		allGeo++;
 							try {
 								geoOut.write(status.getUser().getScreenName() + "|||" + status.getText() + "|||" +status.getGeoLocation().toString() + "|||" + day + " - " + hour + ":" + minute);
 								geoOut.newLine();
-								geoCount++;
+								System.out.println(geoCount++);
 							} catch (IOException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
-								System.out.println("TOTAL COUNTED: " +allTweets);
+								System.out.println("TOTAL COUNTED: " +tweetCount);
 							}
 	                }
 	                
@@ -162,34 +142,13 @@ public class DriverExtended {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-	                //output into a new file after a certain number of tweets
-	                if (throttleCount >= TWEETS_PER_FILE) {
-	                	try {
-	                		allOut.flush();
-	                		setUpTime();
-	                		setUpWriters("all");
-	                		throttleCount = 0;
-	                	} catch (IOException e) {
-	                		// TODO Auto-generated catch block
-	                		e.printStackTrace();
-
-	                	}
-	           		
-	           		if (geoCount >= 5000) {
-	           			try {
-							geoOut.flush();
-							setUpTime();
-		           			setUpWriters("geo");
-		           			geoCount = 0;
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-	           			
-	           		}
-	           }
+	                //exit sample stream & close writers once we get to certain # of tweets
+	                if (throttleCount >= TWEETS_PER_CYCLE) {
+	                	throttleCount = 0;
+	                	twitterStream.shutdown();
+	                }
 	                	
-	   }
+	            }
 
 	            @Override
 	            public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
@@ -224,9 +183,53 @@ public class DriverExtended {
 		setUpTime();
 		setUpWriters("all");
 		setUpWriters("geo");
-		setUpStream();
-		setUpListener();
-		twitterStream.addListener(listener);
-		twitterStream.sample();
+		
+			
+		
+		while (i < TWEET_CYCLES) {
+		 setUpStream();
+		 setUpListener();
+			 
+		 if (tweetCount >= 1000) {
+			 allOut.flush();
+		 	 setUpTime();
+		 	 setUpWriters("all");
+		 	 tweetCount = 0;
+		}
+		
+		if (geoCount >= 1000) {
+			geoOut.flush();
+			setUpTime();
+			setUpWriters("geo");
+			geoCount = 0;
+		}
+		
+		 twitterStream.addListener(listener);
+		 twitterStream.sample();
+		 
+		 try {
+  			 Thread.sleep(20400);
+  			 } catch(InterruptedException e) {
+  		 } 
+		 
+		 try {
+	            Map<String ,RateLimitStatus> rateLimitStatus = twitter.getRateLimitStatus();
+	            for (String endpoint : rateLimitStatus.keySet()) {
+	                RateLimitStatus status = rateLimitStatus.get(endpoint);
+	                System.out.println("Endpoint: " + endpoint);
+	                System.out.println(" Limit: " + status.getLimit());
+	                System.out.println(" Remaining: " + status.getRemaining());
+	                System.out.println(" ResetTimeInSeconds: " + status.getResetTimeInSeconds());
+	                System.out.println(" SecondsUntilReset: " + status.getSecondsUntilReset());
+	            }
+	            
+	        } catch (TwitterException te) {
+	            te.printStackTrace();
+	            System.out.println("Failed to get rate limit status: " + te.getMessage());
+	         
+	        }		
+	
+		 i++;		 
+		}
 	}
 }
